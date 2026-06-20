@@ -1,0 +1,124 @@
+import type { Metadata } from 'next'
+import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
+import { PageHero } from '@/components/page-hero'
+import { SectionHeading } from '@/components/section-heading'
+import { RfqForm } from '@/components/rfq-form'
+import { CostEstimator } from '@/components/cost-estimator'
+import { Reveal } from '@/components/reveal'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import { site, waLink } from '@/lib/site'
+
+export const metadata: Metadata = {
+  title: 'Kontak & Minta Penawaran',
+  description:
+    'Hubungi Rahayu Cipta Mandiri untuk konsultasi gratis dan permintaan penawaran proyek konstruksi atau renovasi Anda di Tangerang dan sekitarnya.',
+}
+
+const contactItems = [
+  { icon: MapPin, label: 'Alamat', value: site.address },
+  { icon: Phone, label: 'Telepon / WhatsApp', value: `${site.phoneLabel} (${site.contactPerson})`, href: `tel:${site.phone}` },
+  { icon: Mail, label: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { icon: Clock, label: 'Jam Operasional', value: site.hours },
+]
+
+export default function ContactPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Kontak"
+        title="Mari Wujudkan Proyek Anda"
+        description="Konsultasi gratis tanpa komitmen. Tim kami siap membantu dari perencanaan hingga eksekusi."
+        breadcrumb="Kontak"
+      />
+
+      <section className="py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 md:px-6">
+          <div className="grid gap-10 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <SectionHeading
+                eyebrow="Hubungi Kami"
+                title="Informasi Kontak"
+                align="left"
+              />
+              <div className="mt-8 space-y-5">
+                {contactItems.map((item) => (
+                  <div key={item.label} className="flex gap-4">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-accent/15 text-accent-foreground">
+                      <item.icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{item.label}</p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-muted-foreground transition-colors hover:text-accent-foreground"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-muted-foreground">{item.value}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8 rounded-2xl border border-border bg-muted p-6">
+                <p className="font-heading text-base font-bold text-foreground">
+                  Butuh respons cepat?
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Chat langsung dengan tim kami melalui WhatsApp.
+                </p>
+                <a
+                  href={waLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants(),
+                    'mt-4 h-11 w-full bg-[#25D366] text-white hover:bg-[#1da851]',
+                  )}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Chat via WhatsApp
+                </a>
+              </div>
+
+              <div className="mt-6 overflow-hidden rounded-2xl border border-border">
+                <iframe
+                  title="Lokasi Rahayu Cipta Mandiri"
+                  src="https://www.google.com/maps?q=Kota+Tangerang+Banten&output=embed"
+                  width="100%"
+                  height="240"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="block"
+                />
+              </div>
+            </div>
+
+            <div className="lg:col-span-3">
+              <Reveal>
+                <RfqForm />
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-muted py-16 md:py-24">
+        <div className="mx-auto max-w-5xl px-4 md:px-6">
+          <SectionHeading
+            eyebrow="Kalkulator Biaya"
+            title="Hitung Estimasi Proyek Anda"
+            description="Dapatkan gambaran kasar anggaran sebelum berkonsultasi. Cepat dan tanpa biaya."
+          />
+          <Reveal className="mt-10">
+            <CostEstimator />
+          </Reveal>
+        </div>
+      </section>
+    </>
+  )
+}
